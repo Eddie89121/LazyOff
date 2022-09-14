@@ -1,0 +1,29 @@
+서버가 꺼졌을 경우 터미널에 입력할 코드
+
+service mysql stop                        // mysql 끄기
+killall -9 node                           // 혹시 안 꺼졌을지 모를 서버 끄기
+sudo nohup service mysql start & disown   // mysql 백그라운드 실행
+sudo nohup yarn dev & disown              // 백그라운드 서버 실행 코드!!!
+
+cd server
+sudo forever start server.js
+forever list 커맨드 입력 후 실행 확인!!!
+
+안될 시..
+cd ..
+sudo nohup forever start -w server/server.js & disown
+forever lsit 확인
+
+
+
+
+
+-- 시행착오 거친 활용 버전 --
+
+메뉴바 > 컨테이너 > 포트포워딩 설정 > 내용 복사(IP, 외부포트) > server폴더의 db_config.json 내용(host, port) 수정
+
+service mysql restart											# 데이터베이스 restart
+killall -9 node													# 살아있는 node 제거(구름이 꺼져 있었다면 아마 모든 노드가 죽어 있을 듯)
+cd client && sudo nohup yarn start & disown						# 프론트 페이지 실행
+cd server && sudo nohup forever start -w server.js & disown 	# 서버(백) 실행		# nohup > no hang up이란 의미로 서버가 죽지 않게 해준다. '&' 백그라운드 실행의 의미. 묶음으로 사용하는게 좋다고 한다.
+
